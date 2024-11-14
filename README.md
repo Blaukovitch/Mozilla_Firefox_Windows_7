@@ -1,7 +1,7 @@
 🇨 🇷 🇦 🇨 🇰
 # [🦊] Mozilla_Firefox_Windows_7 CRACK
 Mozilla Firefox for Windows 7 (cracklab)  
-First version: *131.0*  
+First version: *132.0.2*  
 
 # [🧅] Tor Browser Windows 7 CRACK
 First version: *14.0.1*  
