@@ -1,0 +1,308 @@
+﻿cracklab.team/PAunlock
+80_PA SecuROM keygen
+https://github.com/Blaukovitch/Mozilla_Firefox_Windows_7
+*********************************************************
+
+[section]
+AP-MS-WIN_XP bridges:
++ KERNEL64.DLL 									~ kernel32.dll
++ renamed copy KERNEL64.DLL  == COMBASE.DLL **
++ USER64.DLL 									~ user32.dll 
++ USERENX.DLL 									~ userenv.dll
++ XCRYPTPRIMITIVES.dll 							~ bcryptprimitives.dll
++ Xfplat.dll 									~ MfPlat.dll 
++ WinXttp.dll									~ WinHttp.dll
++ API-MS-WIN-CORE-HANDLE-L1-1-0.dll
++ API-MS-WIN-CORE-LIBRARYLOADER-L1-2-0.dll
++ API-MS-WIN-CORE-REALTIME-L1-1-1.dll
++ API-MS-WIN-CORE-SYNCH-L1-2-7.dll (prev name : API-MS-WIN-CORE-SYNCH-L1-2-0.dll) ***
++ API-MS-WIN-CORE-WINRT-ERROR-L1-1-0.dll
++ API-MS-WIN-CORE-WINRT-L1-1-0.dll
++ API-MS-WIN-CORE-WINRT-STRING-L1-1-0.dll
++ API-MS-WIN-POWER-BASE-L1-1-0.dll
++ API-MS-WIN-POWER-SETTING-L1-1-1.dll
++ API-MS-WIN-SHCORE-SCALING-L1-1-1.dll
+
+<> REPLACED (switched):
+	default-browser-agent.exe
+swapped from latest Firefox ESR 115.32.0
+
+	helper.exe
+swapped from latest Firefox ESR 115.32.0
+
+[section] 
+- RENAMED (DISABLED):
+Microsoft.InputStateManager.DLL *
+Microsoft.Internal.FrameworkUdk.dll *
+Microsoft.UI.Input.dll *
+Microsoft.UI.Windowing.Core.dll  *
+Microsoft.UI.Windowing.dll  *
+
+
+
+[section] 
+! SWAP PE IMPORT TABLE:
+	marshall.dll
+API-MS-WIN-NTUSER-RECTANGLE-L1-1-0.DLL > user32.dll (rectagle operations: UnionRect, OffsetRect)
+API-MS-WIN-CORE-REGISTRY-L1-1-0.DLL > kernel32.dll (RegCloseKey,...)
+API-MS-WIN-CORE-LIBRARYLOADER-L1-2-0.DLL > kernel32.dll (GetModuleFileNameA)
+API-MS-WIN-CORE-SYNCH-L1-2-1.DLL > kernel32.dll (WaitForMultipleObjects)
+API-MS-WIN-CORE-SYSINFO-L1-2-0.DLL > kernel64.dll(GetSystemTimePreciseAsFileTime)
+
+
+	Microsoft.UI.Composition.OSSupport.dll
+API-MS-WIN-CORE-COM-L1-1-0.DLL > ole32.dll
+
+	mozglue.dll
+API-MS-WIN-CORE-VERSION-L1-1-1.DLL > version.dll (GetFileVersionInfoSizeW)
+API-MS-WIN-CORE-PSAPI-L1-1-0.DLL > kernel32.dll (K32EnumProcessModules)
+API-MS-WIN-CORE-VERSION-L1-1-0.DLL > version.dll (VerQueryValueW)
+API-MS-WIN-CORE-ERRORHANDLING-L1-1-1.DLL > kernel32.dll (AddVectoredExceptionHandler/Remove VEH)
+API-MS-WIN-CORE-LIBRARYLOADER-L1-2-0.DLL > kernel32.dll (DisableThreadLibraryCalls)
+API-MS-WIN-CORE-LIBRARYLOADER-L1-2-1.DLL > kernel32.dll (LoadLibraryW)
+API-MS-WIN-CORE-HEAP-L2-1-0.DLL > kernel32.dll (LocalFree)
+API-MS-WIN-CORE-REALTIME-L1-1-0.DLL > kernel32.dll (QueryUnbiasedInterruptTime)
+API-MS-WIN-CORE-REGISTRY-L1-1-0.DLL > kernel32.dll (RegCloseKey, ...)
+API-MS-WIN-CORE-SYSINFO-L1-2-0.DLL > kernel32.dll (VerSetConditionMask)
+
+	mozinference.dll
+KERNEL32.DLL > KERNEL64.DLL (SetThreadInformation)
+
+	MOZWER.DLL
+KERNEL32.DLL > KERNEL64.DLL (GetOverlappedResultEx)
+BCRYPTPRIMITIVES.DLL > XCRYPTPRIMITIVES.DLL (ProcessPrng)
+
+	nmhproxy.exe
+API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
+
+	onnxruntime.dll
+KERNEL32.DLL > KERNEL64.DLL (Mitigations, CreateFile2)
+
+	plugin-container.exe
+KERNEL32.DLL > KERNEL64.DLL (Mitigations)
+
+	xul.dll
+KERNEL32.DLL > KERNEL64.DLL (GetCurrentApplicationUserModelId, ..., GetSystemTimePreciseAsFileTime)
+COMBASE.DLL >-> KERNEL64.DLL (CoCreateFreeThreadedMarshaler, CoIncrementMTAUsage, CoTaskMemAlloc, CoTaskMemFree, RoGetAgileReference)
+BCRYPTPRIMITIVES.DLL > XCRYPTPRIMITIVES.DLL (ProcessPrng)
+USER32.DLL > USER64.DLL (CreateSyntheticPointerDevice, GetPointerFrameTouchInfo, InjectSyntheticPointerInput, ...)
+API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
+
+	xul.dll
+NTDLL.DLL  RtlAddGrowableFunctionTable > ZwClose
+
+[CODE patch]
+C++ (hexrays) code:
+*****************************
+  *v59 = 0;
+      *(v59 + 2) = 0;
+      *(v59 + 1) = 0;
+      *(v59 + 1) = 0x5001030405020409LL;
+      *(v59 + 8) = v55;
+      *(v59 + 9) = v56;
+      *(v59 + 10) = 8;
+      *(v59 + 4) = 20;
+      *(v59 + 10) = 0xB848;
+      *(v59 + 22) = sub_185949160;
+      *(v59 + 15) = 0xE0FF;
+	  ...
+      result_1 = RtlAddGrowableFunctionTable(v59, v59 + 0x20, 1, 1, v59, v59 + 0x7FC00000);
+      ...
+      if ( result_1 )
+      {
+        if ( qword_188A9E078 )
+        {
+          VirtualFree(v59, 0, 0x8000u);
+LABEL_208:
+          result = "js::jit::InitializeJit() failed";
+          goto LABEL_151;
+        }
+		....
+*****************************
+
+
+
+
+	xul.dll 
+CoCreateInstance lnkfile->IShellLinkW instance DISABLED  (COM dsd: shell32.dll object crash)
+$+51DB100        | 48:31C0                       | xor rax,rax                                                                     |
+$+51DB103        | C3                            | ret                                                                             |
+$+51DB104        | 53                            | push rbx                                                                        |
+$+51DB105        | 48:81EC E8000000              | sub rsp,0xE8                                                                    |
+$+51DB10C        | 48:89D6                       | mov rsi,rdx                                                                     |
+$+51DB10F        | 48:89CF                       | mov rdi,rcx                                                                     |
+$+51DB112        | 48:8B05 E70F7103              | mov rax,qword ptr ds:[0x7FEE517D100]                                            |
+$+51DB119        | 48:31E0                       | xor rax,rsp                                                                     |
+$+51DB11C        | 48:898424 E0000000            | mov qword ptr ss:[rsp + 0xE0],rax                                               |
+$+51DB124        | 48:8D4424 38                  | lea rax,qword ptr ss:[rsp + 0x38]                                               |
+$+51DB129        | 48:894424 20                  | mov qword ptr ss:[rsp + 0x20],rax                                               |
+$+51DB12E        | 48:8D0D E3DE0902              | lea rcx,qword ptr ds:[<Shortcut_LNK>]                                           |
+$+51DB135        | 4C:8D0D 3CD80902              | lea r9,qword ptr ds:[<IShellLinkW>]                                             |
+$+51DB13C        | 31D2                          | xor edx,edx                                                                     |
+$+51DB13E        | 41:B8 01000000                | mov r8d,0x1                                                                     |
+$+51DB144        | FF15 DECB8103                 | call qword ptr ds:[<&CoCreateInstance>]                                         |
+$+51DB14A        | BB FFFF0080                   | mov ebx,0x8000FFFF                                                              |
+$+51DB14F        | 85C0                          | test eax,eax                                                                    |
+$+51DB151        | 0F88 0B020000                 | js xul.7FEE1A6C362                                                              |
+$+51DB157        | 837F 68 00                    | cmp dword ptr ds:[rdi + 0x68],0x0                                               |
+$+51DB15B        | 0F84 D4000000                 | je xul.7FEE1A6C235                                                              |
+
+
+CoCreateInstance enumerator->IObjectCollection instance DISABLED  (COM dsd: actxprxy.dll release crash)
+$+51DA8A0        | 31C0                          | xor eax,eax                                                                     |
+$+51DA8A2        | C3                            | ret                                                                             |
+$+51DA8A3        | 90                            | nop                                                                             |
+$+51DA8A4        | 41:55                         | push r13                                                                        |
+$+51DA8A6        | 41:54                         | push r12                                                                        | r12:GIFFT_LabeledTimingDistributionCancel+1BE6150
+$+51DA8A8        | 56                            | push rsi                                                                        |
+$+51DA8A9        | 57                            | push rdi                                                                        |
+$+51DA8AA        | 55                            | push rbp                                                                        |
+$+51DA8AB        | 53                            | push rbx                                                                        |
+$+51DA8AC        | 48:83EC 68                    | sub rsp,0x68                                                                    |
+$+51DA8B0        | 48:89CE                       | mov rsi,rcx                                                                     |
+$+51DA8B3        | 4C:8BBC24 D0000000            | mov r15,qword ptr ss:[rsp + 0xD0]                                               | r15:GIFFT_LabeledTimingDistributionCancel+22BF5E0
+$+51DA8BB        | 48:8B05 3E187103              | mov rax,qword ptr ds:[0x7FEE517D100]                                            |
+$+51DA8C2        | 48:31E0                       | xor rax,rsp                                                                     |
+$+51DA8C5        | 48:894424 60                  | mov qword ptr ss:[rsp + 0x60],rax                                               |
+$+51DA8CA        | 48:8B49 28                    | mov rcx,qword ptr ds:[rcx + 0x28]                                               |
+$+51DA8CE        | 48:85C9                       | test rcx,rcx                                                                    |
+$+51DA8D1        | 0F84 B7010000                 | je xul.7FEE1A6BA8E                                                              |
+$+51DA8D7        | 4C:89CB                       | mov rbx,r9                                                                      |
+$+51DA8DA        | 49:89D6                       | mov r14,rdx                                                                     | rdx:GIFFT_LabeledTimingDistributionAccumulateRawMillis+50D410
+$+51DA8DD        | 4C:894424 30                  | mov qword ptr ss:[rsp + 0x30],r8                                                |
+$+51DA8E2        | 48:8B01                       | mov rax,qword ptr ds:[rcx]                                                      |
+$+51DA8E5        | 48:8B40 40                    | mov rax,qword ptr ds:[rax + 0x40]                                               |
+$+51DA8E9        | FF15 31AB6C03                 | call qword ptr ds:[0x7FEE5136420]                                               |
+$+51DA8EF        | 48:8D05 3AB97E02              | lea rax,qword ptr ds:[0x7FEE4257230]                                            |
+$+51DA8F6        | 48:894424 58                  | mov qword ptr ss:[rsp + 0x58],rax                                               |
+$+51DA8FB        | 48:8D5424 4C                  | lea rdx,qword ptr ss:[rsp + 0x4C]                                               | rdx:GIFFT_LabeledTimingDistributionAccumulateRawMillis+50D410
+$+51DA900        | C702 00000000                 | mov dword ptr ds:[rdx],0x0                                                      | rdx:GIFFT_LabeledTimingDistributionAccumulateRawMillis+50D410
+$+51DA906        | 48:8B4E 28                    | mov rcx,qword ptr ds:[rsi + 0x28]                                               |
+$+51DA90A        | 4C:8D4C24 50                  | lea r9,qword ptr ss:[rsp + 0x50]                                                |
+$+51DA90F        | 49:C701 00000000              | mov qword ptr ds:[r9],0x0                                                       |
+$+51DA916        | 48:8B01                       | mov rax,qword ptr ds:[rcx]                                                      |
+$+51DA919        | 48:8B40 20                    | mov rax,qword ptr ds:[rax + 0x20]                                               |
+$+51DA91D        | 4C:8D05 CC995702              | lea r8,qword ptr ds:[0x7FEE3FE52F0]                                             |
+$+51DA924        | FF15 F6AA6C03                 | call qword ptr ds:[0x7FEE5136420]                                               |
+$+51DA92A        | 40:B5 01                      | mov bpl,0x1                                                                     |
+$+51DA92D        | 85C0                          | test eax,eax                                                                    |
+$+51DA92F        | 0F88 21030000                 | js xul.7FEE1A6BC56                                                              |
+$+51DA935        | 49:8B06                       | mov rax,qword ptr ds:[r14]                                                      | [r14]:GIFFT_LabeledTimingDistributionCancel+1BE5F70
+$+51DA938        | 8338 00                       | cmp dword ptr ds:[rax],0x0                                                      |
+$+51DA93B        | 0F84 BE010000                 | je xul.7FEE1A6BAFF                                                              |
+$+51DA941        | 48:8D4424 40                  | lea rax,qword ptr ss:[rsp + 0x40]                                               |
+$+51DA946        | 48:C700 00000000              | mov qword ptr ds:[rax],0x0                                                      |
+$+51DA94D        | 48:894424 20                  | mov qword ptr ss:[rsp + 0x20],rax                                               |
+$+51DA952        | 48:8D0D 3FE70902              | lea rcx,qword ptr ds:[<A collection of IUnknown objects that can be enumerated> |
+$+51DA959        | 4C:8D0D 48EB0902              | lea r9,qword ptr ds:[<IObjectCollection>]                                       |
+$+51DA960        | 31D2                          | xor edx,edx                                                                     |
+$+51DA962        | 41:B8 01000000                | mov r8d,0x1                                                                     |
+$+51DA968        | FF15 BAD38103                 | call qword ptr ds:[<&CoCreateInstance>]                                         |
+$+51DA96E        | 85C0                          | test eax,eax                                                                    |
+
+
+Remove REG_NOTIFY_THREAD_AGNOSTIC flag:
+$+52024E8        | FF15 A2B36A03            | call qword ptr ds:[<CreateEventW>]                |
+$+52024EE        | 48:8946 50               | mov qword ptr ds:[rsi+50],rax                     |
+$+52024F2        | 48:85C0                  | test rax,rax                                      |
+$+52024F5        | 74 4B                    | je xul.7FEDC973542                                |
+$+52024F7        | 48:8B0E                  | mov rcx,qword ptr ds:[rsi]                        |
+$+52024FA        | C74424 20 01000000       | mov dword ptr ss:[rsp+20],1                       |
+$+5202502        | BA 01000000              | mov edx,1                                         |
+$+5202507        | 41:B8 0F000000           | mov r8d,F                                         | //REG_NOTIFY_THREAD_AGNOSTIC
+$+520250D        | 49:89C1                  | mov r9,rax                                        |
+$+5202510        | FF15 5AB16A03            | call qword ptr ds:[<RegNotifyChangeKeyValue>]     |
+
+$+5202564        | 48:894424 38             | mov qword ptr ss:[rsp+38],rax                     |
+$+5202569        | 48:8B09                  | mov rcx,qword ptr ds:[rcx]                        |
+$+520256C        | 4C:8B4E 50               | mov r9,qword ptr ds:[rsi+50]                      |
+$+5202570        | C74424 20 01000000       | mov dword ptr ss:[rsp+20],1                       |
+$+5202578        | BA 01000000              | mov edx,1                                         | //REG_NOTIFY_THREAD_AGNOSTIC
+$+520257D        | 41:B8 0F000000           | mov r8d,F                                         |
+$+5202583        | FF15 E7B06A03            | call qword ptr ds:[<RegNotifyChangeKeyValue>]     |
+
+
+
+
+	firefox.exe
+DISABLED ALL SBOX_FATAL_CLOSEHANDLES error
+$+33CD7          | FF15 2B8E0200            | call qword ptr ds:[<EnumSystemLocalesEx>]         |
+$+33CDD          | 85C0                     | test eax,eax                                      |
+$+33CDF          | E9 BA000000              | jmp firefox.13FF74D9E                             |
+$+33CE4          | 90                       | nop                                               |
+$+33CE5          | 48:8D8C24 A8000000       | lea rcx,qword ptr ss:[rsp+A8]                     | [rsp+A8]:&"nsThreadPool"
+$+33CED          | E8 6E600000              | call firefox.13FF7AD60                            |
+$+33CF2          | 48:8B9C24 90000000       | mov rbx,qword ptr ss:[rsp+90]                     |
+$+33CFA          | 8B4424 44                | mov eax,dword ptr ss:[rsp+44]                     |
+$+33CFE          | 89C6                     | mov esi,eax                                       |
+$+33D00          | FF15 2A8E0200            | call qword ptr ds:[<GetCurrentProcess>]           |
+$+33D06          | 48:89C1                  | mov rcx,rax                                       |
+$+33D09          | BA 621B0000              | mov edx,1B62                                      | //SBOX_FATAL_CLOSEHANDLES
+$+33D0E          | FF15 9C900200            | call qword ptr ds:[<TerminateProcess>]            |
+
+
+$+33DA3          | 48:85C0                  | test rax,rax                                      |
+$+33DA6          | 90                       | nop                                               | jmp to SBOX_FATAL_CLOSEHANDLES
+$+33DA7          | 90                       | nop                                               |
+$+33DA8          | 90                       | nop                                               |
+$+33DA9          | 90                       | nop                                               |
+$+33DAA          | 90                       | nop                                               |
+$+33DAB          | 90                       | nop                                               |
+$+33DAC          | 48:89C1                  | mov rcx,rax                                       |
+$+33DAF          | FF15 9B8E0200            | call qword ptr ds:[<HeapDestroy>]                 |
+
+
+$+33426          | BA 50000000              | mov edx,50                                        | 50:'P'
+$+3342B          | 48:89F1                  | mov rcx,rsi                                       |
+$+3342E          | E8 ADEB0100              | call <JMP.&void __cdecl operator delete(void *)>  |
+$+33433          | 807C24 54 00             | cmp byte ptr ss:[rsp+54],0                        |
+$+33438          | 8B4424 44                | mov eax,dword ptr ss:[rsp+44]                     |
+$+3343C          | E9 D4ECFFFF              | jmp firefox.13FA03115                             |
+$+33441          | 90                       | nop                                               |
+$+33442          | E9 B7080000              | jmp firefox.13FA04CFE                             | jmp to SBOX_FATAL_CLOSEHANDLES
+
+
+[section]
+~ strings:
+	firefox.exe
+.rdata:  
+$+5944            78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+5954            69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+$+5964            2E 00 64 00 6C 00 6C 00 00 00 74 00 65 00 73 00  ..d.l.l...t.e.s.  
+
+
+	widevinecdm.dll
+KERNEL32.DLL > kernel64.dll
+
+rdata:
+$+B1B8DA          78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+B1B8EA          69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+
+$+B1BCA6          78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+B1BCB6          69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+$+B1BCC6          2E 00 64 00 6C 00 6C 00 00 00 43 61 6E 27 74 20  ..d.l.l...Can't  
+
+^ CLSIDs:
+	XUL.dll
+rdata:
+$+1A8900          5A EE 59 B8 38 D8 5B 4B A2 E8 1A DC 7D 93 DB 48  ZîY¸8Ø[K¢è.Ü}.ÛH  	{B859EE5A-D838-4B5B-A2E8-1ADC7D93DB48}
+
+
+
+be advice:
+AVX/AVX512 asm instructions
+	mozinference.dll
+$+9C905          | C5F857C0                 | vxorps xmm0,xmm0,xmm0                             |
+$+9C909          | C5FC1105 479D1F00        | vmovups yword ptr ds:[7FEEF0F7658],ymm0           |
+$+9C911          | C5FC1105 5F9D1F00        | vmovups yword ptr ds:[7FEEF0F7678],ymm0           |
+$+9C919          | 48:C705 749D1F00 0000000 | mov qword ptr ds:[7FEEF0F7698],0                  |
+$+9C924          | BA 02000000              | mov edx,2                                         |
+$+9C929          | C5F877                   | vzeroupper                                        |
+
+
+
+
+--------------------------
+* Windows 10 System lib, lot of refts to RT && native components
+** is contains CoCreateFreeThreadedMarshaler, CoIncrementMTAUsage, CoTaskMemAlloc, CoTaskMemFree, RoGetAgileReference with FIREFOX defition flag
+*** renamed, issue #28 fixed: https://github.com/Blaukovitch/Mozilla_Firefox_Windows_7/issues/28

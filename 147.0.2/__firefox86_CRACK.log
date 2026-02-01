@@ -1,0 +1,281 @@
+cracklab.team/PAunlock
+80_PA SecuROM keygen
+https://github.com/Blaukovitch/Mozilla_Firefox_Windows_7
+*********************************************************
+
+[section]
+AP-MS-WIN_XP bridges:
++ KERNEL64.DLL 									~ kernel32.dll
++ renamed copy KERNEL64.DLL  == COMBASE.DLL **
++ USER64.DLL 									~ user32.dll 
++ USERENX.DLL 									~ userenv.dll
++ XCRYPTPRIMITIVES.dll 							~ bcryptprimitives.dll
++ Xfplat.dll 									~ MfPlat.dll 
++ WinXttp.dll									~ WinHttp.dll
++ API-MS-WIN-CORE-HANDLE-L1-1-0.dll
++ API-MS-WIN-CORE-LIBRARYLOADER-L1-2-0.dll
++ API-MS-WIN-CORE-REALTIME-L1-1-1.dll
++ API-MS-WIN-CORE-SYNCH-L1-2-7.dll (prev name : API-MS-WIN-CORE-SYNCH-L1-2-0.dll) ***
++ API-MS-WIN-CORE-WINRT-ERROR-L1-1-0.dll
++ API-MS-WIN-CORE-WINRT-L1-1-0.dll
++ API-MS-WIN-CORE-WINRT-STRING-L1-1-0.dll
++ API-MS-WIN-POWER-BASE-L1-1-0.dll
++ API-MS-WIN-POWER-SETTING-L1-1-1.dll
++ API-MS-WIN-SHCORE-SCALING-L1-1-1.dll
+
+<> REPLACED (switched):
+	default-browser-agent.exe
+swapped from latest Firefox ESR 115.32.0 x86
+
+	helper.exe
+swapped from latest Firefox ESR 115.32.0 x86
+
+[section] 
+- RENAMED (DISABLED):
+Microsoft.InputStateManager.DLL *
+Microsoft.Internal.FrameworkUdk.dll *
+Microsoft.UI.Input.dll *
+Microsoft.UI.Windowing.Core.dll  *
+Microsoft.UI.Windowing.dll  *
+
+
+
+[section] 
+! SWAP PE IMPORT TABLE:
+	marshall.dll
+API-MS-WIN-NTUSER-RECTANGLE-L1-1-0.DLL > user32.dll (rectagle operations: UnionRect, OffsetRect)
+API-MS-WIN-CORE-REGISTRY-L1-1-0.DLL > kernel32.dll (RegCloseKey,...)
+API-MS-WIN-CORE-LIBRARYLOADER-L1-2-0.DLL > kernel32.dll (GetModuleFileNameA)
+API-MS-WIN-CORE-SYNCH-L1-2-1.DLL > kernel32.dll (WaitForMultipleObjects)
+API-MS-WIN-CORE-SYSINFO-L1-2-0.DLL > kernel64.dll(GetSystemTimePreciseAsFileTime)
+
+
+	Microsoft.UI.Composition.OSSupport.dll
+API-MS-WIN-CORE-COM-L1-1-0.DLL > ole32.dll
+
+	mozglue.dll
+API-MS-WIN-CORE-VERSION-L1-1-1.DLL > version.dll (GetFileVersionInfoSizeW)
+API-MS-WIN-CORE-PSAPI-L1-1-0.DLL > kernel32.dll (K32EnumProcessModules)
+API-MS-WIN-CORE-VERSION-L1-1-0.DLL > version.dll (VerQueryValueW)
+API-MS-WIN-CORE-ERRORHANDLING-L1-1-1.DLL > kernel32.dll (AddVectoredExceptionHandler/Remove VEH)
+API-MS-WIN-CORE-LIBRARYLOADER-L1-2-1.DLL > kernel32.dll (LoadLibraryW)
+API-MS-WIN-CORE-HEAP-L2-1-0.DLL > kernel32.dll (LocalFree)
+API-MS-WIN-CORE-REALTIME-L1-1-0.DLL > kernel64.dll (QueryUnbiasedInterruptTime)
+API-MS-WIN-CORE-REGISTRY-L1-1-0.DLL > kernel32.dll (RegCloseKey, ...)
+API-MS-WIN-CORE-SYSINFO-L1-2-0.DLL > kernel32.dll (VerSetConditionMask)
+API-MS-WIN-CORE-RTLSUPPORT-L1-2-0.DLL > NTDLL.DLL kernel32.dll (RtlCompareMemory)
+
+	mozinference.dll
+KERNEL32.DLL > KERNEL64.DLL (SetThreadInformation)
+
+	MOZWER.DLL
+KERNEL32.DLL > KERNEL64.DLL (GetOverlappedResultEx)
+BCRYPTPRIMITIVES.DLL > XCRYPTPRIMITIVES.DLL (ProcessPrng)
+
+	nmhproxy.exe
+API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
+
+	onnxruntime.dll
+KERNEL32.DLL > KERNEL64.DLL (Mitigations, CreateFile2)
+
+	onnxruntime.dll (32)
+renamed kernel86.dll 
+
+	plugin-container.exe
+KERNEL32.DLL > KERNEL64.DLL (Mitigations)
+
+	xul.dll
+KERNEL32.DLL > KERNEL64.DLL (GetCurrentApplicationUserModelId, ..., GetSystemTimePreciseAsFileTime)
+COMBASE.DLL >-> KERNEL64.DLL (CoCreateFreeThreadedMarshaler, CoIncrementMTAUsage, CoTaskMemAlloc, CoTaskMemFree, RoGetAgileReference)
+BCRYPTPRIMITIVES.DLL > XCRYPTPRIMITIVES.DLL (ProcessPrng)
+USER32.DLL > USER64.DLL (CreateSyntheticPointerDevice, GetPointerFrameTouchInfo, InjectSyntheticPointerInput, ...)
+API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
+
+
+[CODE patch]
+	firefox.exe
+$+D4C3   | FF15 2CE71D00            | call dword ptr ds:[<EnumSystemLocalesEx>]               |
+$+D4C9   | 85C0                     | test eax,eax                                            | 
+$+D4CB   | 90                       | nop                                                     |
+$+D4CC   | 90                       | nop                                                     |
+$+D4CD   | E8 7E3A0300              | call firefox.1D1F50                                     |
+$+D4D2   | 85C0                     | test eax,eax                                            | eax:BaseThreadInitThunk
+$+D4D4   | 90                       | nop                                                     |
+$+D4D5   | 90                       | nop                                                     |
+$+D4D6   | 50                       | push eax                                                | eax:BaseThreadInitThunk
+$+D4D7   | FF15 D0E71D00            | call dword ptr ds:[<HeapDestroy>]                       |
+$+D4DD   | E9 22FFFFFF              | jmp firefox.19E404                                      |
+$+D4E2   | 8D8D 44FFFFFF            | lea ecx,dword ptr ss:[ebp-BC]                           |
+$+D4E8   | E8 D31C0000              | call firefox.1A01C0                                     |
+$+D4ED   | 8BB5 20FFFFFF            | mov esi,dword ptr ss:[ebp-E0]                           |
+$+D4F3   | FF15 40E71D00            | call dword ptr ds:[<GetCurrentProcess>]                 |
+$+D4F9   | 68 621B0000              | push 1B62                                               |
+$+D4FE   | 50                       | push eax                                                | eax:BaseThreadInitThunk
+$+D4FF   | FF15 84E81D00            | call dword ptr ds:[<TerminateProcess>]                  |
+$+D505   | E9 0FFEFFFF              | jmp firefox.19E319                                      |
+
+$+D406 | E8 D5170000              | call firefox.FBFBE0                                     |
+$+D40B | 89C3                     | mov ebx,eax                                             | ebx:"0u"
+$+D40D | 89F1                     | mov ecx,esi                                             |
+$+D40F | E8 AC1D0000              | call firefox.FC01C0                                     |
+$+D414 | 84DB                     | test bl,bl                                              |
+$+D416 | 8BB5 20FFFFFF            | mov esi,dword ptr ss:[ebp-E0]                           |
+$+D41C | E9 F8FEFFFF              | jmp firefox.FBE319                                      |
+$+D421 | 90                       | nop                                                     |
+$+D422 | E9 CC000000              | jmp firefox.FBE4F3                                      |
+
+$+50BC    78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+50CC    69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+$+50DC    2E 00 64 00 6C 00 6C 00 00 00 74 00 65 00 73 00  ..d.l.l...t.e.s.  
+
+
+	xul.dll
+CoCreateInstance shellLink autotstart
+$+FA89D0 | 31C0                     | xor eax,eax                                             |
+$+FA89D2 | C3                       | ret                                                     |
+$+FA89D3 | 53                       | push ebx                                                |
+$+FA89D4 | 57                       | push edi                                                |
+$+FA89D5 | 56                       | push esi                                                |
+$+FA89D6 | 83E4 F8                  | and esp,FFFFFFF8                                        |
+$+FA89D9 | 81EC 580E0000            | sub esp,E58                                             |
+$+FA89DF | 894C24 04                | mov dword ptr ss:[esp+4],ecx                            |
+$+FA89E3 | A1 C0B0176E              | mov eax,dword ptr ds:[6E17B0C0]                         | 6E17B0C0:"ФёXО"
+$+FA89E8 | 31E8                     | xor eax,ebp                                             |
+
+CoCreateInstance Collection
+$+46E8E506B04 | 31C0                     | xor eax,eax                                             |
+$+46E8E526B04 | C2 1000                  | ret 10                                                  |
+$+46E8E556B04 | 56                       | push esi                                                |
+$+46E8E566B04 | 83EC 2C                  | sub esp,2C                                              |
+$+46E8E596B04 | 89CF                     | mov edi,ecx                                             |
+$+46E8E5B6B04 | 8B4D 14                  | mov ecx,dword ptr ss:[ebp+14]                           |
+$+46E8E5E6B04 | A1 C0B0176E              | mov eax,dword ptr ds:[6E17B0C0]                         | 6E17B0C0:"ФёXО"
+$+46E8E636B04 | 31E8                     | xor eax,ebp                                             |
+$+46E8E656B04 | 8945 F0                  | mov dword ptr ss:[ebp-10],eax                           |
+$+46E8E686B04 | 8B77 18                  | mov esi,dword ptr ds:[edi+18]                           | [edi+18]:"ЙВ\f"
+...
+$+46E8ED86B04 | 8901                     | mov dword ptr ds:[ecx],eax                              |
+$+46E8EDA6B04 | 51                       | push ecx                                                |
+$+46E8EDB6B04 | 68 ACFCD66C              | push xul.6CD6FCAC                                       |
+$+46E8EE06B04 | 6A 01                    | push 1                                                  |
+$+46E8EE26B04 | 50                       | push eax                                                |
+$+46E8EE36B04 | 68 9CF8D66C              | push <xul.A collection of IUnknown objects that can be  |
+$+46E8EE86B04 | FF15 2C85226E            | call dword ptr ds:[<&CoCreateInstance>]                 |
+
+
+zero-shared mem
+$+1B3390 55E5 | 8B4424 1C                | mov eax,dword ptr ss:[esp+1C]                           |
+$+1B3394 55E5 | 85C0                     | test eax,eax                                            |
+$+1B3396 55E5 | 0F95C1                   | setne cl                                                |
+$+1B3399 55E5 | 8B7C24 10                | mov edi,dword ptr ss:[esp+10]                           |
+$+1B339D 55E5 | 8B7424 14                | mov esi,dword ptr ss:[esp+14]                           |
+$+1B33A1 55E5 | 89FA                     | mov edx,edi                                             |
+$+1B33A3 55E5 | 893424                   | mov dword ptr ss:[esp],esi                              |
+$+1B33A6 55E5 | 09F2                     | or edx,esi                                              |
+$+1B33A8 55E5 | 90                       | nop                                                     |
+$+1B33A9 55E5 | 90                       | nop                                                     |
+$+1B33AA 55E5 | 90                       | nop                                                     |
+$+1B33AB 55E5 | 90                       | nop                                                     |
+$+1B33AC 55E5 | 90                       | nop                                                     |
+$+1B33AD 55E5 | 90                       | nop                                                     |
+$+1B33AE 55E5 | 90                       | nop                                                     |
+$+1B33AF 55E5 | 90                       | nop                                                     |
+$+1B33B0 55E5 | 90                       | nop                                                     |
+$+1B33B1 55E5 | 90                       | nop                                                     |
+$+1B33B2 55E5 | 90                       | nop                                                     |
+$+1B33B3 55E5 | C74424 1C 00000000       | mov dword ptr ss:[esp+1C],0                             |
+
+
+Remove REG_NOTIFY_THREAD_AGNOSTIC flag:
+$+4710703 | 8945 F0                  | mov dword ptr ss:[ebp-10],eax                           |
+$+4710706 | 31C0                     | xor eax,eax                                             |
+$+4710708 | 40                       | inc eax                                                 |
+$+4710709 | 50                       | push eax                                                |
+$+471070A | FF76 30                  | push dword ptr ds:[esi+30]                              |
+$+471070D | 68 0F000000              | push F                                                  |
+$+4710712 | 50                       | push eax                                                |
+$+4710713 | FF36                     | push dword ptr ds:[esi]                                 |
+$+4710715 | FF15 90AC286E            | call dword ptr ds:[<RegNotifyChangeKeyValue>]           |
+$+471071B | 8B5E 04                  | mov ebx,dword ptr ds:[esi+4]                            |
+$+471071E | 83C6 08                  | add esi,8                                               |
+$+4710721 | 8D7D E8                  | lea edi,dword ptr ss:[ebp-18]                           | 
+$+4710724 | 89F9                     | mov ecx,edi                                             |
+$+4710726 | 89F2                     | mov edx,esi                                             |
+$+4710728 | E8 33000000              | call xul.6B191760                                       |
+
+
+$+471069F | FF15 A0AD286E            | call dword ptr ds:[<CreateEventW>]                      |
+$+47106A5 | 8946 30                  | mov dword ptr ds:[esi+30],eax                           |
+$+47106A8 | 85C0                     | test eax,eax                                            |
+$+47106AA | 74 2E                    | je xul.6B1916DA                                         |
+$+47106AC | 31C9                     | xor ecx,ecx                                             |
+$+47106AE | 41                       | inc ecx                                                 |
+$+47106AF | 51                       | push ecx                                                |
+$+47106B0 | 50                       | push eax                                                |
+$+47106B1 | 68 0F000000              | push F                                                  |
+$+47106B6 | 51                       | push ecx                                                |
+$+47106B7 | FF36                     | push dword ptr ds:[esi]                                 |
+$+47106B9 | FF15 90AC286E            | call dword ptr ds:[<RegNotifyChangeKeyValue>]           |
+
+
+
+
+[section]
+~ strings:
+	firefox.exe
+.rdata:  
+$+5944            78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+5954            69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+$+5964            2E 00 64 00 6C 00 6C 00 00 00 74 00 65 00 73 00  ..d.l.l...t.e.s.  
+
+
+	widevinecdm.dll
+KERNEL32.DLL > kernel64.dll
+
+rdata:
+$+B0AB6E  78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+B0AB7E  69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+
+$+B0ADE2  78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
+$+B0ADF2  69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
+$+B0AE02  2E 00 64 00 6C 00 6C 00 00 00 43 61 6E 27 74 20  ..d.l.l...Can't   
+
+^ CLSIDs:
+	XUL.dll
+rdata:
+$+1A8900          5A EE 59 B8 38 D8 5B 4B A2 E8 1A DC 7D 93 DB 48  ZîY¸8Ø[K¢è.Ü}.ÛH  	{B859EE5A-D838-4B5B-A2E8-1ADC7D93DB48}
+
+
+
+be advice:
+	mozinference.dll (32 bit/x86) is containt default XMM instructions:
+$+24F09  | 0F28E6                   | movaps xmm4,xmm6                                        |
+$+24F0C  | F3:0F59C3                | mulss xmm0,xmm3                                         |
+$+24F10  | F3:0F10B5 E8FEFFFF       | movss xmm6,dword ptr ss:[ebp-118]                       | [ebp-118]:&"ђ)п_"
+$+24F18  | F3:0F58F0                | addss xmm6,xmm0                                         |
+$+24F1C  | F3:0F11B5 E8FEFFFF       | movss dword ptr ss:[ebp-118],xmm6                       | [ebp-118]:&"ђ)п_"
+$+24F24  | 0F57C0                   | xorps xmm0,xmm0                                         |
+$+24F27  | F3:0F2AC2                | cvtsi2ss xmm0,edx                                       | edx:NlsAnsiCodePage+2070
+$+24F2B  | F3:0F59C3                | mulss xmm0,xmm3                                         |
+$+24F2F  | F3:0F10B5 90FEFFFF       | movss xmm6,dword ptr ss:[ebp-170]                       |
+$+24F37  | F3:0F58F0                | addss xmm6,xmm0                                         |
+$+24F3B  | 0F57C0                   | xorps xmm0,xmm0                                         |
+$+24F3E  | F3:0F2AC1                | cvtsi2ss xmm0,ecx                                       | ecx:RtlFindMessage+677
+$+24F42  | F3:0F59C3                | mulss xmm0,xmm3                                         |
+
+vs
+	instead x64 version with AVX/AVX512:
+$+9C905          | C5F857C0                 | vxorps xmm0,xmm0,xmm0                             |
+$+9C909          | C5FC1105 479D1F00        | vmovups yword ptr ds:[7FEEF0F7658],ymm0           |
+$+9C911          | C5FC1105 5F9D1F00        | vmovups yword ptr ds:[7FEEF0F7678],ymm0           |
+$+9C919          | 48:C705 749D1F00 0000000 | mov qword ptr ds:[7FEEF0F7698],0                  |
+$+9C924          | BA 02000000              | mov edx,2                                         |
+$+9C929          | C5F877                   | vzeroupper                                        |
+
+
+
+
+--------------------------
+* Windows 10 System lib, lot of refts to RT && native components
+** is contains CoCreateFreeThreadedMarshaler, CoIncrementMTAUsage, CoTaskMemAlloc, CoTaskMemFree, RoGetAgileReference with FIREFOX defition flag
+*** renamed, issue #28 fixed: https://github.com/Blaukovitch/Mozilla_Firefox_Windows_7/issues/28
