@@ -23,15 +23,6 @@ AP-MS-WIN_XP bridges:
 + API-MS-WIN-POWER-SETTING-L1-1-1.dll
 + API-MS-WIN-SHCORE-SCALING-L1-1-1.dll
 
-<> REPLACED (switched):
-	default-browser-agent.exe
-swapped from latest Firefox ESR 115.32.0 x86
-
-	helper.exe
-swapped from latest Firefox ESR 115.32.0 x86
-
-
-
 [section] 
 ! SWAP PE IMPORT TABLE:
 
@@ -47,8 +38,6 @@ API-MS-WIN-CORE-REGISTRY-L1-1-0.DLL > kernel32.dll (RegCloseKey, ...)
 API-MS-WIN-CORE-SYSINFO-L1-2-0.DLL > kernel32.dll (VerSetConditionMask)
 API-MS-WIN-CORE-RTLSUPPORT-L1-2-0.DLL > NTDLL.DLL kernel32.dll (RtlCompareMemory)
 
-	mozinference.dll
-KERNEL32.DLL > KERNEL64.DLL (SetThreadInformation)
 
 	MOZWER.DLL
 KERNEL32.DLL > KERNEL64.DLL (GetOverlappedResultEx)
@@ -57,14 +46,7 @@ BCRYPTPRIMITIVES.DLL > XCRYPTPRIMITIVES.DLL (ProcessPrng)
 	nmhproxy.exe
 API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
 
-	onnxruntime.dll
-KERNEL32.DLL > KERNEL64.DLL (Mitigations, CreateFile2)
 
-	onnxruntime.dll (32)
-renamed kernel86.dll 
-
-	plugin-container.exe
-KERNEL32.DLL > KERNEL64.DLL (Mitigations)
 
 	xul.dll
 KERNEL32.DLL > KERNEL64.DLL (GetCurrentApplicationUserModelId, ..., GetSystemTimePreciseAsFileTime)
@@ -76,35 +58,38 @@ API-MS-WIN-CORE-SYNCH-L1-2-0.DLL > API-MS-WIN-CORE-SYNCH-L1-2-7
 
 [CODE patch]
 	firefox.exe
-$+D4C3   | FF15 2CE71D00            | call dword ptr ds:[<EnumSystemLocalesEx>]               |
-$+D4C9   | 85C0                     | test eax,eax                                            | 
-$+D4CB   | 90                       | nop                                                     |
-$+D4CC   | 90                       | nop                                                     |
-$+D4CD   | E8 7E3A0300              | call firefox.1D1F50                                     |
-$+D4D2   | 85C0                     | test eax,eax                                            | eax:BaseThreadInitThunk
-$+D4D4   | 90                       | nop                                                     |
-$+D4D5   | 90                       | nop                                                     |
-$+D4D6   | 50                       | push eax                                                | eax:BaseThreadInitThunk
-$+D4D7   | FF15 D0E71D00            | call dword ptr ds:[<HeapDestroy>]                       |
-$+D4DD   | E9 22FFFFFF              | jmp firefox.19E404                                      |
-$+D4E2   | 8D8D 44FFFFFF            | lea ecx,dword ptr ss:[ebp-BC]                           |
-$+D4E8   | E8 D31C0000              | call firefox.1A01C0                                     |
-$+D4ED   | 8BB5 20FFFFFF            | mov esi,dword ptr ss:[ebp-E0]                           |
-$+D4F3   | FF15 40E71D00            | call dword ptr ds:[<GetCurrentProcess>]                 |
-$+D4F9   | 68 621B0000              | push 1B62                                               |
-$+D4FE   | 50                       | push eax                                                | eax:BaseThreadInitThunk
-$+D4FF   | FF15 84E81D00            | call dword ptr ds:[<TerminateProcess>]                  |
-$+D505   | E9 0FFEFFFF              | jmp firefox.19E319                                      |
-
-$+D406 | E8 D5170000              | call firefox.FBFBE0                                     |
-$+D40B | 89C3                     | mov ebx,eax                                             | ebx:"0u"
-$+D40D | 89F1                     | mov ecx,esi                                             |
-$+D40F | E8 AC1D0000              | call firefox.FC01C0                                     |
-$+D414 | 84DB                     | test bl,bl                                              |
-$+D416 | 8BB5 20FFFFFF            | mov esi,dword ptr ss:[ebp-E0]                           |
-$+D41C | E9 F8FEFFFF              | jmp firefox.FBE319                                      |
-$+D421 | 90                       | nop                                                     |
-$+D422 | E9 CC000000              | jmp firefox.FBE4F3                                      |
+008DD4DE | 75 25                    | jne firefox.8DD505                                                              |
+008DD4E0 | 6A 00                    | push 0                                                                          |
+008DD4E2 | 6A 00                    | push 0                                                                          |
+008DD4E4 | 6A 01                    | push 1                                                                          |
+008DD4E6 | 68 60D88D00              | push firefox.8DD860                                                             |
+008DD4EB | FF15 94B69800            | call dword ptr ds:[<EnumSystemLocalesEx>]                                       |
+008DD4F1 | 90                       | nop                                                                             |
+008DD4F2 | 90                       | nop                                                                             |
+008DD4F3 | 90                       | nop                                                                             |
+008DD4F4 | 90                       | nop                                                                             |
+008DD4F5 | E8 4658FEFF              | call firefox.8C2D40                                                             |
+008DD4FA | 90                       | nop                                                                             |
+008DD4FB | 90                       | nop                                                                             |
+008DD4FC | 90                       | nop                                                                             |
+008DD4FD | 90                       | nop                                                                             |
+008DD4FE | 50                       | push eax                                                                        | eax:BaseThreadInitThunk
+008DD4FF | FF15 6CB79800            | call dword ptr ds:[<HeapDestroy>]                                               |
+008DD505 | 8D4C24 10                | lea ecx,dword ptr ss:[esp+10]                                                   |
+008DD509 | E8 7251FEFF              | call firefox.8C2680                                                             |
+008DD50E | 90                       | nop                                                                             |
+008DD50F | 90                       | nop                                                                             |
+008DD510 | 90                       | nop                                                                             |
+008DD511 | 90                       | nop                                                                             |
+008DD512 | 8D4C24 10                | lea ecx,dword ptr ss:[esp+10]                                                   |
+008DD516 | E8 154AFEFF              | call firefox.8C1F30                                                             |
+008DD51B | EB 1B                    | jmp firefox.8DD538                                                              |
+008DD51D | 8D4C24 10                | lea ecx,dword ptr ss:[esp+10]                                                   |
+008DD521 | E8 0A4AFEFF              | call firefox.8C1F30                                                             |
+008DD526 | FF15 CCB69800            | call dword ptr ds:[<GetCurrentProcess>]                                         |
+008DD52C | 68 621B0000              | push 1B62                                                                       |
+008DD531 | 50                       | push eax                                                                        | eax:BaseThreadInitThunk
+008DD532 | FF15 60B89800            | call dword ptr ds:[<TerminateProcess>]                                          |
 
 $+50BC    78 00 63 00 72 00 79 00 70 00 74 00 70 00 72 00  x.c.r.y.p.t.p.r.  
 $+50CC    69 00 6D 00 69 00 74 00 69 00 76 00 65 00 73 00  i.m.i.t.i.v.e.s.  
